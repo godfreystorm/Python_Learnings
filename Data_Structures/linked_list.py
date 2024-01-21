@@ -127,6 +127,7 @@ class LinkedList:
 
         return True
 
+
 egg = LinkedList(1)
 egg.append(2)
 egg.append(3)
