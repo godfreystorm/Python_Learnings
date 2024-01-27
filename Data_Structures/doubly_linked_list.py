@@ -41,7 +41,7 @@ class DoublyLinkedList:
             self.tail = self.tail.prev
             self.tail.next = None
             temp.prev = None
-            self.length -= 1
+        self.length -= 1
         return temp
 
     def prepend(self, value):
@@ -67,11 +67,11 @@ class DoublyLinkedList:
             self.head = self.head.next
             self.head.prev = None
             temp.next = None
-            self.length -= 1
-        return temp.value
+        self.length -= 1
+        return temp
 
     def get(self, index):
-        if index < 0 or index > self.length:
+        if index < 0 or index >= self.length:
             return None
         temp = self.head
         if index < self.length/2:
@@ -91,21 +91,22 @@ class DoublyLinkedList:
         return False
 
     def insert(self, index, value):
-        new_node = Node(value)
-        before = self.get(index-1)
-        after = before.next
+        if index < 0 or index > self.length:
+            return False
         if index == 0:
             return self.prepend(value)
         if index == self.length:
             return self.append(value)
-        if before is not None:
-            before.next = new_node
-            new_node.prev = before
-            new_node.next = after
+        new_node = Node(value)
+        before = self.get(index-1)
+        after = before.next
+        before.next = new_node
+        new_node.prev = before
+        new_node.next = after
+        if after is not None:
             after.prev = new_node
-            self.length += 1
-            return True
-        return False
+        self.length += 1
+        return True
 
     def remove(self, index):
         if index < 0 or index >= self.length:
@@ -115,14 +116,14 @@ class DoublyLinkedList:
         if index == self.length-1:
             return self.pop()
         temp = self.get(index)
-        if index is not None:
-
+        if temp is not None:
             temp.next.prev = temp.prev
             temp.prev.next = temp.next
+            temp.next = None
+            temp.prev = None
             self.length -= 1
-            return True
+            return temp
         return False
-
 
 
 egg = DoublyLinkedList(1)
